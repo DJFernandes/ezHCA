@@ -5,6 +5,7 @@
 #' @param strict.input Error if input is not of class HCA
 #' @return Dataframes with columns for time and subject's position
 #' @export
+#' @import dplyr
 #' @examples
 #' \dontrun{
 #'   subjectdatalist_to_df(subjectdatalist)
