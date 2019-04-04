@@ -19,7 +19,7 @@ library(ezHCA)
 library(tidyverse)
 ```
 
-I uploaded some example HDF5 files (https://wiki.mouseimaging.ca/display/MICePub/Home+Cage+Analysis). I downloaded them and put them all in a directory ('hcadata/'). You can use any files HDF5 files from the Actual Analytics home cage monitoring system.
+I uploaded some example HDF5 files (https://wiki.mouseimaging.ca/display/MICePub/Home+Cage+Analysis). I downloaded them and put them all in a directory ('hcadata/'). You can use any HDF5 files from the Actual Analytics home cage monitoring system.
 
 ```{r}
 hdf5files = list.files(path = 'hcadata/',pattern = '.hdf5$',full.names=T)
@@ -28,9 +28,7 @@ hdf5files = list.files(path = 'hcadata/',pattern = '.hdf5$',full.names=T)
 This function will read all the HDF5 files. The 'subjectIDs' argument is optional and is a vector of all the known RFIDs. If not supplied, the RFIDs are automatically determined but this is not recommended as it is prone to errors.
 
 ```{r}
-# change name from hcaGetHDF5series to hcaReadHDF5series
-# give option for aggretime
-subjectdatalist = hcaGetHDF5series( hdf5files , subjectIDs = c("900026000623623", "900026000623624", "900026000623653","900026000623654") )
+subjectdatalist = hcaReadHDF5series( hdf5files , subjectIDs = c("900026000623623", "900026000623624", "900026000623653","900026000623654") )
 ```
 
 We can create a data.frame that is ready for analysis using the 'hca_to_hcadf' function.

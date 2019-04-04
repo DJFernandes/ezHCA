@@ -5,6 +5,7 @@
 #' @param subjectIDs List of subjects IDs. If NULL, the subjects are automatically determined.
 #' @return List of dataframes, one for each subjects.
 #' @import rhdf5
+#' @import pbapply
 #' @export
 #' @examples
 #' \dontrun{
@@ -16,8 +17,9 @@
 #'   hcaGetHDF5series(hdf5files)
 #' }
 
-hcaGetHDF5series = function( hdf5files , subjectIDs = NULL , prog=T ) {
-   if (prog) {lapply = pbapply::pblapply}
+# TODO: give argument for aggregate time
+hcaReadHDF5series = function( hdf5files , subjectIDs = NULL , prog=T ) {
+   if (prog) {lapply = pblapply}
 
    if (is.null(subjectIDs)) {
      # function to open and read all subject informations
