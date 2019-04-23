@@ -37,7 +37,7 @@ dftoproc = hca_to_hcadf(subjectdatalist)
 ```
 
 ## Information Theory
-From this point on, you can do whatever you like to the data. I think information theory is a useful way to analyse the data so I created a couple function (with more to come... and I am taking recommendations).
+From this point on, you can do whatever you like to the data. I think information theory is a useful way to analyse the data so I created a couple functions (with more to come... and I am taking recommendations).
 
 We can calculate entropy, which is a measure of exploration. The higher the entropy (default normalized to a scale 0 to 1) the more 'spread out' a mouse's position is. We can also calculate mutual information, which is a measure of how much information you gain from a mouse's position based on the position of all the cagemates. The higher the mutual information, the more social the mouse is. 
 
