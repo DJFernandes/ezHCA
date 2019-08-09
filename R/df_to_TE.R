@@ -2,14 +2,16 @@
 #'
 #' Computes transfer entropy for each timebin of a HCAdf object
 #' @param HCAdf HCAdf object
+#' @param lagtime lag time for transfer entropy in seconds
 #' @param aggre.time timebins in seconds
 #' @param norm flag to compute entropy
+#' @param int.pairs If true, it will compute the outgoing (affTE) and incoming entropy (effTE) for each individual. If false, it will be TE between all pairs.
 #' @param strict.input Error if input is not of class HCAdf
-#' @return mutual information summary
+#' @return transfer entropy summary
 #' @export
 #' @examples
 #' \dontrun{
-#'   test = HCAdf_to_entropy(asdfsadf)
+#'   test = HCAdf_to_TE(asdfsadf)
 #' }
 
 HCAdf_to_TE = function(HCAdf,lagtime=900,aggre.time=900,norm=TRUE,int.pairs=F,strict.input=F) {

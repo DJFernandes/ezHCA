@@ -10,20 +10,24 @@ HCAdf_to_TE(HCAdf, lagtime = 900, aggre.time = 900, norm = TRUE,
 \arguments{
 \item{HCAdf}{HCAdf object}
 
+\item{lagtime}{lag time for transfer entropy in seconds}
+
 \item{aggre.time}{timebins in seconds}
 
 \item{norm}{flag to compute entropy}
 
+\item{int.pairs}{If true, it will compute the outgoing (affTE) and incoming entropy (effTE) for each individual. If false, it will be TE between all pairs.}
+
 \item{strict.input}{Error if input is not of class HCAdf}
 }
 \value{
-mutual information summary
+transfer entropy summary
 }
 \description{
 Computes transfer entropy for each timebin of a HCAdf object
 }
 \examples{
 \dontrun{
-  test = HCAdf_to_entropy(asdfsadf)
+  test = HCAdf_to_TE(asdfsadf)
 }
 }
