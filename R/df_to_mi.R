@@ -1,6 +1,6 @@
 #' Mutual Information summary
 #'
-#' Computes nutual information for each timebin of a HCAdf object
+#' Computes mutual information for each timebin of a HCAdf object
 #' @param HCAdf HCAdf object
 #' @param aggre.time timebins in seconds
 #' @param norm flag to compute entropy
