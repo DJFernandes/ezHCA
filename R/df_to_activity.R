@@ -30,17 +30,23 @@ HCAdf_to_activity = function(HCAdf,aggre.time=900,norm=TRUE,strict.input=F) {
     ld = list(dounsampledtimevals)
     nd = 1:length(dounsampledtimevals)
     statemat = HCAdf[, !(colnames(HCAdf) %in% c("t", "dayvec"))]
-    aggre_summary = data.frame(
-                      t        = aggregate(tvec, ld, mean)[, -1], 
-                      activity = aggregate(nd, ld, function(x) 
-                                     homeCageActivity(x, statemat))[, -1]
-                    )
+
+    t_aggre = aggregate(tvec, ld, mean)[, -1]
+    activity = aggregate(nd, ld, function(x) 
+                   homeCageActivity(x, statemat))[, -1]
+
     if (norm) {
        tw = aggregate(tvec, ld, function(x) diff(range(x)))[, -1] / 3600
-       aggre_summary$activity = aggre_summary$activity / tw
+       if (is.null(dim(activity))) {
+          activity = activity/tw
+       } else {
+          for (i in 1:ncol(activity)) {
+             activity[,i] = activity[,i]/tw
+          }
+       }
     }
-    colnames(aggre_summary) = gsub("_xd", "", cn)
-
+    colnames(activity) = gsub("_xd", "", colnames(activity))
+    aggre_summary = cbind( data.frame(t = t_aggre) , activity )
     aggre_summary$dayvec = tvec_to_dayvec(aggre_summary$t)
     class(aggre_summary) = c("HCAactivity", class(aggre_summary))
     return(aggre_summary)
