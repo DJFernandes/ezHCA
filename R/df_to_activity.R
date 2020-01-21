@@ -36,7 +36,10 @@ HCAdf_to_activity = function(HCAdf,aggre.time=900,norm=TRUE,strict.input=F) {
                    homeCageActivity(x, statemat))[, -1]
 
     if (norm) {
-       tw = aggregate(tvec, ld, function(x) diff(range(x)))[, -1] / 3600
+       tw = aggregate(
+              as.numeric(tvec), 
+              ld, 
+              function(x) diff(range(x)))[, -1] / 3600
        if (is.null(dim(activity))) {
           activity = activity/tw
        } else {
