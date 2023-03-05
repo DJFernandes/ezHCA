@@ -4,8 +4,12 @@
 \alias{day_break}
 \title{Find day break}
 \usage{
-day_break(posixcttime, dbtime = "07:00:00",
-  timezone = extract_time_zone(Sys.time()), prev = F)
+day_break(
+  posixcttime,
+  dbtime = "07:00:00",
+  timezone = extract_time_zone(Sys.time()),
+  prev = F
+)
 }
 \arguments{
 \item{posixcttime}{time}

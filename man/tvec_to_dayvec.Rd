@@ -4,8 +4,11 @@
 \alias{tvec_to_dayvec}
 \title{Annotate time with day or night}
 \usage{
-tvec_to_dayvec(posix_time, daystart = times("07:00:01"),
-  nightstart = times("19:00:00"))
+tvec_to_dayvec(
+  posix_time,
+  daystart = times("07:00:01"),
+  nightstart = times("19:00:00")
+)
 }
 \arguments{
 \item{posix_time}{vector of times given in POSIXct or POSIXt format}

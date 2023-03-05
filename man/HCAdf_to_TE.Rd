@@ -4,8 +4,14 @@
 \alias{HCAdf_to_TE}
 \title{Transfer entropy summary}
 \usage{
-HCAdf_to_TE(HCAdf, lagtime = 900, aggre.time = 900, norm = TRUE,
-  int.pairs = F, strict.input = F)
+HCAdf_to_TE(
+  HCAdf,
+  lagtime = 900,
+  aggre.time = 900,
+  norm = TRUE,
+  int.pairs = F,
+  strict.input = F
+)
 }
 \arguments{
 \item{HCAdf}{HCAdf object}

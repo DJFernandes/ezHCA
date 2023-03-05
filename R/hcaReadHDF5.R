@@ -14,16 +14,15 @@
 
 hcaReadHDF5=function(i,subjectIDs = NULL,start.time = NULL) {
 
-   filedatalistsubject=list()
-
    if (is.null(start.time)) {
       start.time=find_start_time(i)
    }
-
-   subjects_in_this_file = subset(h5ls(i),group=="/subjects")[,'name']
+   
+   subjects_in_this_file = subset(no_message_h5ls(i),group=="/subjects")[,'name']
 
    if (is.null(subjectIDs)) { subjectIDs = subjects_in_this_file }
-     
+
+   filedatalistsubject=list()     
    for (j in subjectIDs) {
      if (!j %in% subjects_in_this_file) {next}
      subjaddress = paste0('/subjects/',j,'/antenna/ant1/')  #address in hdf5file for subject
@@ -42,3 +41,14 @@ hcaReadHDF5=function(i,subjectIDs = NULL,start.time = NULL) {
 #   H5close()
    return(filedatalistsubject)
 }
+
+#' suppress console messages from rhdf5::h5ls 
+#'
+#' Read an HCA HDF5 file and return a list of dataframes, one for each subjects
+#' @param ... arguments to be passed to h5ls
+#' @return Return from h5ls
+#' @import rhdf5
+no_message_h5ls = function(...) {
+      sink(nullfile()) ; ret = h5ls(...) ; sink()
+      return(ret)
+   }

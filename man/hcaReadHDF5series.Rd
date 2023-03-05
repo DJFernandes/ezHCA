@@ -4,12 +4,14 @@
 \alias{hcaReadHDF5series}
 \title{Read many HCA HDF5 files}
 \usage{
-hcaReadHDF5series(hdf5files, subjectIDs = NULL, prog = T)
+hcaReadHDF5series(hdf5files, subjectIDs = NULL, parallel = NULL)
 }
 \arguments{
 \item{hdf5files}{input HDF5 files}
 
 \item{subjectIDs}{List of subjects IDs. If NULL, the subjects are automatically determined.}
+
+\item{parallel}{number of local cores to use. If NULL, process is run in serial.}
 }
 \value{
 List of dataframes, one for each subjects.
