@@ -23,17 +23,21 @@ HCAdf_to_TE = function(HCAdf,lagtime=900,aggre.time=900,norm=TRUE,int.pairs=F,st
       }
    }
 
-   # Lag time vector
-   bool = !( ( HCAdf$t - HCAdf$t[1] )  < lagtime )
-   lag_t = HCAdf$t[ bool ]
+   # sort HCAdf by time to avoid shenanigans
+   HCAdf = arrange(HCAdf,t)
 
-   # Cropped xd
-   lag_xd = HCAdf[ 1:(nrow(HCAdf) - sum(!bool)) , colnames(HCAdf) != 't' ]
-   colnames(lag_xd) = gsub('_xd','_lxd',colnames(lag_xd))
-
-   lag_df = data.frame(t=lag_t , lag_xd)
-   colnames(lag_df)[-1] = colnames(lag_xd)
-
+   # aggregate HCAdf data by second (which is the minimum time interval)
+   # take mode if needed
+   getmode = function(v) { as.numeric(names(tail(sort(table(v)),1))) }
+   HCAdf = aggregate(as.integer(HCAdf$t),HCAdf,getmode) %>% 
+               select(-x) %>% arrange(t)
+   
+   # Lag time df 
+   lag_df = HCAdf
+   lag_df$t = HCAdf$t + lagtime
+   cbool = ( colnames(HCAdf) != 't' )
+   colnames(lag_df)[cbool] = gsub('_xd','_lxd',colnames(HCAdf)[cbool])
+   
    # Merge Positions and lagged positions
    HCAdf = inner_join(HCAdf,lag_df,by='t')
 
@@ -77,3 +81,19 @@ HCAdf_to_TE = function(HCAdf,lagtime=900,aggre.time=900,norm=TRUE,int.pairs=F,st
    return(aggre_summary)
 }
 
+
+
+# older version of the code to create lag time that didn't work with Chien's data
+#   # Lag time vector
+#   bool = !( ( HCAdf$t - HCAdf$t[1] )  < lagtime )
+#   lag_t = HCAdf$t[ bool ]
+#
+#   # Cropped xd
+#   lag_xd = HCAdf[ 1:(nrow(HCAdf) - sum(!bool)) , colnames(HCAdf) != 't' ]
+#   colnames(lag_xd) = gsub('_xd','_lxd',colnames(lag_xd))
+#
+#   lag_df = data.frame(t=lag_t , lag_xd)
+#   colnames(lag_df)[-1] = colnames(lag_xd)
+#
+#   # Merge Positions and lagged positions
+#   HCAdf = inner_join(HCAdf,lag_df,by='t')
