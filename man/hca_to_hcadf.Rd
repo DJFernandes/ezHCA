@@ -4,10 +4,12 @@
 \alias{hca_to_hcadf}
 \title{Convert HCA object to HCA dataframe}
 \usage{
-hca_to_hcadf(subjectdatalist, strict.input = F)
+hca_to_hcadf(subjectdatalist, dim = 1, strict.input = F)
 }
 \arguments{
 \item{subjectdatalist}{input HCA object}
+
+\item{dim}{number of dimensions to consider. Can only be 1 or 2. If 1, then only mouse position along the length of the cage is returned.}
 
 \item{strict.input}{Error if input is not of class HCA}
 }
@@ -19,6 +21,6 @@ Convert HCA object to HCA dataframe with column for each subject's 1D position
 }
 \examples{
 \dontrun{
-  subjectdatalist_to_df(subjectdatalist)
+  hca_to_hcadf(subjectdatalist)
 }
 }

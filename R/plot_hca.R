@@ -6,7 +6,6 @@
 #' @return Plot of subjects horizontal position
 #' @import ggplot2
 #' @import grid
-#' @import gridExtra
 #' @method plot HCA
 #' @export
 
@@ -24,5 +23,5 @@ plot.HCA = function( subjectdatalist , idxs = NULL ) {
    })
 
    # TODO: night shades
-   grid.arrange(grobs = pllist , ncol = length(subjectdatalist))
+   gridExtra::grid.arrange(grobs = pllist , ncol = length(subjectdatalist))
 }

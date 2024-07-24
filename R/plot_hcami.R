@@ -6,7 +6,6 @@
 #' @return Plot of subjects' mutual information timeseries
 #' @import ggplot2
 #' @import grid
-#' @import gridExtra
 #' @method plot HCAmi
 #' @export
 
@@ -39,5 +38,5 @@ plot.HCAmi = function( hcamidf , idxs = NULL ) {
    })
 
    # TODO: night shades
-   grid.arrange(grobs = pllist , ncol = length(pld))
+   gridExtra::grid.arrange(grobs = pllist , ncol = length(pld))
 }

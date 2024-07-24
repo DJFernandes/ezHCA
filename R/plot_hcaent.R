@@ -6,7 +6,6 @@
 #' @return Plot of subjects' entropy timeseries
 #' @import ggplot2
 #' @import grid
-#' @import gridExtra
 #' @method plot HCAentropy
 #' @export
 
@@ -39,5 +38,5 @@ plot.HCAentropy = function( hcaentdf , idxs = NULL ) {
    })
 
    # TODO: night shades
-   grid.arrange(grobs = pllist , ncol = length(pld))
+   gridExtra::grid.arrange(grobs = pllist , ncol = length(pld))
 }
