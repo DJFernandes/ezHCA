@@ -31,6 +31,8 @@ HCAdf_to_TE = function(HCAdf,lagtime=900,aggre.time=900,norm=TRUE,int.pairs=F,st
    getmode = function(v) { as.numeric(names(tail(sort(table(v)),1))) }
    HCAdf = aggregate(as.integer(HCAdf$t),HCAdf,getmode) %>% 
                select(-x) %>% arrange(t)
+   data_duration = difftime(max(HCAdf$t),min(HCAdf$t),units = "secs")
+   t_origin = min(HCAdf$t)
    
    # Lag time df 
    lag_df = HCAdf
@@ -40,6 +42,22 @@ HCAdf_to_TE = function(HCAdf,lagtime=900,aggre.time=900,norm=TRUE,int.pairs=F,st
    
    # Merge Positions and lagged positions
    HCAdf = inner_join(HCAdf,lag_df,by='t')
+   cbool = ( colnames(HCAdf) != 't' )
+
+   # check if data is empty (i.e. time lag is longer than data duration) 
+   short_duration_flag = FALSE
+   if (nrow(HCAdf) == 0) {
+      short_duration_flag = TRUE
+      warning_msg = paste0(
+         "Lag Time (",lagtime,") ",
+         "is longer than ",
+         "data duration (",data_duration,")"
+      )
+      warning(warning_msg)
+      
+      HCAdf[1,cbool] = 0
+      HCAdf[1,!cbool] = t_origin
+   }
 
    nc = ncol(HCAdf) ; cn = colnames(HCAdf)
    HCAdf$dayvec=tvec_to_dayvec(HCAdf$t)
@@ -48,6 +66,7 @@ HCAdf_to_TE = function(HCAdf,lagtime=900,aggre.time=900,norm=TRUE,int.pairs=F,st
    ld = list(dounsampledtimevals)
    nd = 1:length(dounsampledtimevals)
    statemat = HCAdf[,!(colnames(HCAdf) %in% c('t','dayvec'))]
+   
    aggre_summary = data.frame(
         t=aggregate(tvec , ld , mean )[,-1],
         aggregate(nd , ld, function(x) TransEnt(x,statemat,norm=norm))[,-1]
@@ -55,6 +74,7 @@ HCAdf_to_TE = function(HCAdf,lagtime=900,aggre.time=900,norm=TRUE,int.pairs=F,st
    colnames(aggre_summary)[-1]=gsub('^X','',colnames(aggre_summary)[-1])   
 
    aggre_summary$dayvec = tvec_to_dayvec(aggre_summary$t)
+   cbool = !( colnames(aggre_summary) %in% c('t','dayvec') )
 
    if (!int.pairs) {
       ids = gsub('_xd','',colnames(HCAdf)[grep('_xd',colnames(HCAdf))])
@@ -75,6 +95,14 @@ HCAdf_to_TE = function(HCAdf,lagtime=900,aggre.time=900,norm=TRUE,int.pairs=F,st
 
            data.frame(stringsAsFactors=F,select(aggre_summary,t,dayvec),dirTE,ID=i)
          }) %>% do.call(what = 'rbind')
+   }
+   
+   if (short_duration_flag) {
+      if (!int.pairs) {
+         aggre_summary[,c('affTE','effTE')] = NA
+      } else {
+         aggre_summary[,cbool] = NA
+      }
    }
 
    class(aggre_summary) = c('HCAte',class(aggre_summary))
