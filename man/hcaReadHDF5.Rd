@@ -2,9 +2,9 @@
 % Please edit documentation in R/hcaReadHDF5.R
 \name{hcaReadHDF5}
 \alias{hcaReadHDF5}
-\title{Read a HCA HDF5 file}
+\title{Read a HCA HDF5 file using rhdf5}
 \usage{
-hcaReadHDF5(i, subjectIDs = NULL, start.time = NULL)
+hcaReadHDF5(i, subjectIDs = NULL, start.time = NULL, downsample = T)
 }
 \arguments{
 \item{i}{input HDF5 file}
@@ -12,6 +12,8 @@ hcaReadHDF5(i, subjectIDs = NULL, start.time = NULL)
 \item{subjectIDs}{List of subjects IDs. If NULL, the subjects are automatically determined}
 
 \item{start.time}{The start time of HCA HDF5 file. If NULL, it is automatically determined.}
+
+\item{downsample}{If TRUE, Aggregate data by second (Default). If FALSE, don't aggregate.}
 }
 \value{
 List of dataframes, one for each subjects.
