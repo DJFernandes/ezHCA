@@ -16,10 +16,10 @@ TransEnt = function(idx,statemat,norm=TRUE) {
 
    statemat = statemat[idx,]
 
-   lag_statemat = statemat[,grep('_lxd',colnames(statemat))]
-   colnames(lag_statemat) = gsub("_lxd","",colnames(lag_statemat))
-   statemat = statemat[,grep('_xd',colnames(statemat))]
-   colnames(statemat) = gsub("_xd","",colnames(statemat))
+   lag_statemat = statemat[,grep('_state_l$',colnames(statemat))]
+   colnames(lag_statemat) = gsub("_state_l$","",colnames(lag_statemat))
+   statemat = statemat[,grep('_state$',colnames(statemat))]
+   colnames(statemat) = gsub("_state$","",colnames(statemat))
 
    # Order them properly just incase
    lag_statemat=lag_statemat[,colnames(statemat)]

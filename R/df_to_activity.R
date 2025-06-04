@@ -2,6 +2,7 @@
 #'
 #' Computes activity (number of transitions) for each timebin of a HCAdf object
 #' @param HCAdf HCAdf object
+#' @param dim number of dimensions to consider. Can only be 1 or 2. If 1, then only mouse position along the length of the cage is analysed
 #' @param aggre.time timebins in seconds
 #' @param norm If TRUE, antenna breaks per hour will be returned. If FALSE, total number of breaks in timebin is returned. 
 #' @param strict.input Error if input is not of class HCAdf
@@ -13,18 +14,25 @@
 #' }
 
 
-HCAdf_to_activity = function(HCAdf,aggre.time=900,norm=TRUE,strict.input=F) {
+HCAdf_to_activity = function(HCAdf,dim=1,aggre.time=900,norm=TRUE,strict.input=F) {
    
-   if ( !('HCAdf' %in% class(HCAdf)) ) {
-      if (strict.input) {
-         stop('Object is not of class HCAdf. Stopping...')
-      } else {
-         warning('Object is not of class HCAdf. Proceeding anyways but be careful...')
-      }
-   }
+    if ( !('HCAdf' %in% class(HCAdf)) ) {
+       if (strict.input) {
+          stop('Object is not of class HCAdf. Stopping...')
+       } else {
+          warning('Object is not of class HCAdf. Proceeding anyways but be careful...')
+       }
+    }
+
+    if (!(dim %in% c(1,2))) {
+       stop('dim must only be 1 or 2')
+    }
+   
+   
+    HCAdf = position_to_state(HCAdf,dim)
 
     nc = ncol(HCAdf) ; cn = colnames(HCAdf)
-    HCAdf$dayvec = tvec_to_dayvec(HCAdf$t)
+    # HCAdf$dayvec = tvec_to_dayvec(HCAdf$t)
     tvec = HCAdf$t
     dounsampledtimevals = as.numeric(tvec)%/%aggre.time
     ld = list(dounsampledtimevals)
@@ -48,7 +56,7 @@ HCAdf_to_activity = function(HCAdf,aggre.time=900,norm=TRUE,strict.input=F) {
           }
        }
     }
-    colnames(activity) = gsub("_xd", "", colnames(activity))
+    colnames(activity) = gsub("_state$", "", colnames(activity))
     aggre_summary = cbind( data.frame(t = t_aggre) , activity )
     aggre_summary$dayvec = tvec_to_dayvec(aggre_summary$t)
     class(aggre_summary) = c("HCAactivity", class(aggre_summary))

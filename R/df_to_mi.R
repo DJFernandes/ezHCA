@@ -2,6 +2,7 @@
 #'
 #' Computes mutual information for each timebin of a HCAdf object
 #' @param HCAdf HCAdf object
+#' @param dim number of dimensions to consider. Can only be 1 or 2. If 1, then only mouse position along the length of the cage is analysed
 #' @param aggre.time timebins in seconds
 #' @param norm flag to compute entropy
 #' @param strict.input Error if input is not of class HCAdf
@@ -13,7 +14,7 @@
 #' }
 
 
-HCAdf_to_MI = function(HCAdf,aggre.time=900,norm=TRUE,strict.input=F) {
+HCAdf_to_MI = function(HCAdf,dim=1,aggre.time=900,norm=TRUE,strict.input=F) {
    
    if ( !('HCAdf' %in% class(HCAdf)) ) {
       if (strict.input) {
@@ -22,8 +23,16 @@ HCAdf_to_MI = function(HCAdf,aggre.time=900,norm=TRUE,strict.input=F) {
          warning('Object is not of class HCAdf. Proceeding anyways but be careful...')
       }
    }
+   
+   if (!(dim %in% c(1,2))) {
+      stop('dim must only be 1 or 2')
+   }
+   
+   
+   HCAdf = position_to_state(HCAdf,dim)
+   
    nc = ncol(HCAdf) ; cn = colnames(HCAdf)
-   HCAdf$dayvec=tvec_to_dayvec(HCAdf$t)
+   # HCAdf$dayvec=tvec_to_dayvec(HCAdf$t)
    tvec = HCAdf$t
    dounsampledtimevals = as.numeric(tvec) %/% aggre.time
    ld = list(dounsampledtimevals)
